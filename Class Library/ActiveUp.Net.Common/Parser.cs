@@ -262,7 +262,7 @@ namespace ActiveUp.Net.Mail
 #endif
 
                 if (part.ContentDisposition != ContentDisposition.Attachment)
-                    part.TextContent = System.Text.Encoding.GetEncoding(charset).GetString(part.BinaryContent,0,part.BinaryContent.Length);
+                    part.TextContent = Codec.GetEncoding(charset).GetString(part.BinaryContent,0,part.BinaryContent.Length);
             }
             // This is a quoted-printable encoded part body.
             else if (part.ContentTransferEncoding.Equals(ContentTransferEncoding.QuotedPrintable))
@@ -273,13 +273,13 @@ namespace ActiveUp.Net.Mail
                 // Let's decode.
                 part.TextContent = Codec.FromQuotedPrintable(part.TextContent, charset);
                 // Knowing the charset, we can provide a binary version of this body data.
-                part.BinaryContent = Encoding.GetEncoding(charset).GetBytes(part.TextContent);
+                part.BinaryContent = Codec.GetEncoding(charset).GetBytes(part.TextContent);
             }
             // Otherwise, this is an unencoded part body and we keep the text version as it is.
             else
             {
                 // Knowing the charset, we can provide a binary version of this body data.
-                part.BinaryContent = Encoding.GetEncoding(charset).GetBytes(part.TextContent);
+                part.BinaryContent = Codec.GetEncoding(charset).GetBytes(part.TextContent);
             }
         }
 

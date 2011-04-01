@@ -19,6 +19,8 @@ using System;
 
 using System.Collections.Specialized;
 using System.Collections.Generic;
+using System.Text;
+
 namespace ActiveUp.Net.Mail
 {
 	/// <summary>
@@ -58,7 +60,7 @@ namespace ActiveUp.Net.Mail
             // Added this verification, there was an error here.
             if (input != null)
             {
-                byte[] body = System.Text.Encoding.GetEncoding(fromCharset).GetBytes(input);
+                byte[] body = GetEncoding(fromCharset).GetBytes(input);
                 int index = 0, wrap = 0, check = 0;
 
                 byte decim = 0;
@@ -122,7 +124,7 @@ namespace ActiveUp.Net.Mail
 		/// </example>
 		public static string RFC2047Encode(string input, string charset)
 		{
-			return "=?"+charset+"?B?"+System.Convert.ToBase64String(System.Text.Encoding.GetEncoding(charset).GetBytes(input))+"?=";
+			return "=?"+charset+"?B?"+System.Convert.ToBase64String(GetEncoding(charset).GetBytes(input))+"?=";
 		}
 		/// <summary>
 		/// Decodes the given string from the format specified in RFC 2047 (=?charset?value?=).
@@ -154,12 +156,12 @@ namespace ActiveUp.Net.Mail
                     if (parts[1].ToUpper() == "Q")
                     {
                         byte[] data = System.Text.Encoding.ASCII.GetBytes(parts[2].Replace("²rep", "="));
-                        decoded = decoded.Replace("=?" + encoded + "?=", Codec.FromQuotedPrintable(System.Text.Encoding.GetEncoding(parts[0]).GetString(data,0,data.Length), parts[0]));
+                        decoded = decoded.Replace("=?" + encoded + "?=", Codec.FromQuotedPrintable(GetEncoding(parts[0]).GetString(data,0,data.Length), parts[0]));
                     }
                     else
                     {
                         byte[] data = System.Convert.FromBase64String(parts[2].Replace("²rep", "="));
-                        decoded = decoded.Replace("=?" + encoded + "?=", System.Text.Encoding.GetEncoding(parts[0]).GetString(data,0,data.Length));
+                        decoded = decoded.Replace("=?" + encoded + "?=", GetEncoding(parts[0]).GetString(data,0,data.Length));
                     }
 				}
 				decoded = decoded.Replace("_"," ");
@@ -231,9 +233,22 @@ namespace ActiveUp.Net.Mail
                 for (int j = 0; j < arr.Count; j++) decoded[j] = (byte)arr[j];
                 
             }
-            return System.Text.Encoding.GetEncoding(toCharset).GetString(decoded,0,decoded.Length).TrimEnd('=');
+		    return GetEncoding(toCharset).GetString(decoded,0,decoded.Length).TrimEnd('=');
 		}
-        public static string GetFieldName(string input)
+
+	    public static Encoding GetEncoding(string toCharset)
+	    {
+	        try
+	        {
+	            return Encoding.GetEncoding(toCharset);
+	        }
+	        catch
+	        {
+	            return Encoding.GetEncoding("iso-8859-1");
+	        }
+	    }
+
+	    public static string GetFieldName(string input)
         {
             switch (input)
             {

@@ -15,6 +15,7 @@
 // along with SharpMap; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
 
+using System.Text;
 using ActiveUp.Net.Mail;
 using ActiveUp.Net.Mail;
 using System.Collections.Specialized;
@@ -81,7 +82,7 @@ namespace ActiveUp.Net.Mail
 			if(this.ContentType.MimeType.ToLower().IndexOf("text/")!=-1)
 			{
 				this.ContentTransferEncoding = ContentTransferEncoding.QuotedPrintable;
-				this.TextContent = System.Text.Encoding.GetEncoding("utf-8").GetString(this.BinaryContent,0,this.BinaryContent.Length);
+				this.TextContent = Encoding.GetEncoding("utf-8").GetString(this.BinaryContent,0,this.BinaryContent.Length);
 			}
 			else
 			{
@@ -108,7 +109,7 @@ namespace ActiveUp.Net.Mail
             if (this.ContentType.MimeType.ToLower().IndexOf("text/") != -1)
             {
                 this.ContentTransferEncoding = ContentTransferEncoding.QuotedPrintable;
-                this.TextContent = System.Text.Encoding.GetEncoding("utf-8").GetString(this.BinaryContent, 0, this.BinaryContent.Length);
+                this.TextContent = Encoding.GetEncoding("utf-8").GetString(this.BinaryContent, 0, this.BinaryContent.Length);
             }
             else
             {
@@ -137,7 +138,7 @@ namespace ActiveUp.Net.Mail
             {
                 this.Charset = charset;
                 this.ContentTransferEncoding = ContentTransferEncoding.QuotedPrintable;
-                this.TextContent = System.Text.Encoding.GetEncoding(charset).GetString(this.BinaryContent, 0, this.BinaryContent.Length);
+                this.TextContent = Codec.GetEncoding(charset).GetString(this.BinaryContent, 0, this.BinaryContent.Length);
             }
             else
             {
@@ -166,7 +167,7 @@ namespace ActiveUp.Net.Mail
 			{
 				this.Charset = charset;
 				this.ContentTransferEncoding = ContentTransferEncoding.QuotedPrintable;
-				this.TextContent = System.Text.Encoding.GetEncoding(charset).GetString(this.BinaryContent,0,this.BinaryContent.Length);
+				this.TextContent = Codec.GetEncoding(charset).GetString(this.BinaryContent,0,this.BinaryContent.Length);
 			}
 			else
 			{
@@ -494,7 +495,7 @@ namespace ActiveUp.Net.Mail
                     if (this.BinaryContent.Length > 0)
                         return Codec.Wrap(System.Convert.ToBase64String(this.BinaryContent), 78);
                     else
-                        return Codec.Wrap(System.Convert.ToBase64String(System.Text.Encoding.GetEncoding(this.Charset).GetBytes(this.TextContent)), 78);
+                        return Codec.Wrap(System.Convert.ToBase64String(Codec.GetEncoding(this.Charset).GetBytes(this.TextContent)), 78);
                 }
                 else
                 {
