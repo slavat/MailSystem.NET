@@ -933,7 +933,7 @@ namespace ActiveUp.Net.Mail
                     address.Name = input.Replace("<" + address.Email + ">", "");
                     address.Email = Parser.Clean(Parser.RemoveWhiteSpaces(address.Email));
                     if (address.Name.IndexOf("\"") == -1) address.Name = Parser.Clean(address.Name);
-                    address.Name = address.Name.Trim(new char[] { ' ', '\"' });
+                    address.Name = address.Name.Replace("\"", "").Trim();
                 }
                 return address;
             }
