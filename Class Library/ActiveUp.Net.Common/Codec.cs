@@ -191,7 +191,7 @@ namespace ActiveUp.Net.Mail
 
             try
             {
-                input = input.Replace("=\r\n", "") + "=3D=3D";
+                input = input.Replace("=\r\n", "").Replace("=\n", "") + "=3D=3D";
                 int i = 0;
                 
                 while (true)
