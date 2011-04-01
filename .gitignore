@@ -1,0 +1,8 @@
+obj/
+bin/
+Release/
+Class Library/Obfuscation/
+*.user
+*.suo
+*.cache
+_ReSharper.*
