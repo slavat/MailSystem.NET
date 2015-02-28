@@ -190,7 +190,7 @@ namespace ActiveUp.Net.Mail
 
                 // We will consider the highest-level text parts that are not attachments to be the intended for display.
                 // We know the highest-level parts will be set, because the parser first goes to the deepest level and returns top-level parts last.
-                if (part.ContentType.Type.Equals("text") && !part.ContentDisposition.Disposition.Equals("attachment"))
+                if (part.ContentType.Type.Equals("text") && !part.ContentDisposition.Disposition.Equals("attachment") && !string.IsNullOrWhiteSpace(part.TextContent))
                 {
                     if (part.ContentType.SubType.Equals("plain"))
                     {
